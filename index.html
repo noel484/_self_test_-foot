@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
+<title>손발톱 무좀 셀프 테스트 · 닥터나우</title>
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css"/>
+<style>
+:root{
+  --orange:#FD7E14; --orange-dark:#E8590C;
+  --green:#34C759; --green-tint:rgba(52,199,89,.15);
+  --yellow:#FFD60A; --yellow-tint:rgba(255,214,10,.15);
+  --red:#FF3B30; --red-tint:rgba(255,59,48,.15);
+  --bg:#1C1C1E; --bg2:#2C2C2E; --bg3:#3A3A3C;
+  --card:#FFFFFF;
+  --ink:#FFFFFF; --ink-2:rgba(255,255,255,.65); --ink-3:rgba(255,255,255,.38);
+  --line:rgba(255,255,255,.1);
+  --radius:20px; --radius-sm:14px; --maxw:430px;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;margin:0;padding:0;}
+html,body{height:100%;}
+body{font-family:"Pretendard Variable",Pretendard,-apple-system,"Apple SD Gothic Neo",sans-serif;
+  background:var(--bg);color:var(--ink);line-height:1.5;letter-spacing:-.01em;min-height:100dvh;}
+.wrap{max-width:var(--maxw);margin:0 auto;min-height:100dvh;display:flex;flex-direction:column;background:var(--bg);overflow:hidden;}
+
+/* 헤더 */
+header{flex:none;padding:0 20px;background:var(--bg);}
+.topbar{display:flex;align-items:center;gap:8px;height:52px;}
+.back{appearance:none;border:0;background:transparent;padding:6px;margin:-6px;cursor:pointer;
+  color:var(--ink-2);border-radius:10px;display:none;}
+.back svg{display:block;}
+.brand{font-size:13px;font-weight:600;color:var(--ink-2);}
+.progress-wrap{height:3px;background:rgba(255,255,255,.12);width:100%;}
+.progress-bar{height:100%;width:0%;background:var(--orange);transition:width .4s cubic-bezier(.4,0,.2,1);}
+.progress-wrap[hidden]{display:none;}
+
+main{flex:1;display:flex;flex-direction:column;min-height:0;}
+.screen{flex:1;display:flex;flex-direction:column;animation:rise .35s cubic-bezier(.2,.7,.2,1);}
+@keyframes rise{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:none;}}
+
+/* 인트로 */
+.intro-body{flex:1;display:flex;flex-direction:column;justify-content:flex-end;padding:0 24px 32px;}
+.intro-body h1{font-size:32px;font-weight:800;line-height:1.28;letter-spacing:-.03em;margin-bottom:24px;}
+.intro-body p{font-size:15px;color:var(--ink-2);line-height:1.7;margin-bottom:12px;}
+.intro-note{font-size:13px;color:var(--ink-3);background:var(--bg2);border:1px solid var(--line);
+  border-radius:var(--radius-sm);padding:13px 15px;margin-top:4px;}
+.intro-cta{flex:none;padding:16px 24px calc(env(safe-area-inset-bottom,0px) + 16px);}
+
+/* 공통 버튼 */
+.btn-primary{appearance:none;width:100%;border:0;background:var(--orange);color:#fff;font-family:inherit;
+  font-size:18px;font-weight:700;padding:19px;border-radius:16px;cursor:pointer;
+  transition:transform .1s,background .15s;box-shadow:0 8px 24px rgba(253,126,20,.35);}
+.btn-primary:hover{background:var(--orange-dark);}.btn-primary:active{transform:scale(.97);}
+.btn-primary:disabled{background:#4A4A4C;box-shadow:none;cursor:not-allowed;color:var(--ink-3);}
+
+/* 질문 */
+.q-body{flex:1;display:flex;flex-direction:column;justify-content:flex-end;padding:0 24px 24px;gap:16px;}
+.q-counter{font-size:13px;font-weight:700;color:var(--orange);letter-spacing:.04em;}
+.q-title{font-size:24px;font-weight:800;line-height:1.38;letter-spacing:-.025em;white-space:pre-line;}
+.q-desc{font-size:14px;color:var(--ink-2);line-height:1.7;}
+.q-cta{flex:none;padding:0 24px calc(env(safe-area-inset-bottom,0px) + 16px);display:flex;gap:10px;}
+.btn-yes{flex:1;appearance:none;border:0;background:var(--orange);color:#fff;font-family:inherit;
+  font-size:18px;font-weight:700;padding:18px;border-radius:16px;cursor:pointer;
+  transition:transform .1s,background .15s;box-shadow:0 6px 18px rgba(253,126,20,.3);}
+.btn-yes:hover{background:var(--orange-dark);}.btn-yes:active{transform:scale(.97);}
+.btn-no{flex:1;appearance:none;border:0;background:var(--bg3);color:var(--ink-2);font-family:inherit;
+  font-size:18px;font-weight:700;padding:18px;border-radius:16px;cursor:pointer;transition:transform .1s,background .15s;}
+.btn-no:hover{background:#48484A;}.btn-no:active{transform:scale(.97);}
+
+/* 결과 */
+.result-screen{flex:1;display:flex;flex-direction:column;overflow-y:auto;animation:rise .35s cubic-bezier(.2,.7,.2,1);}
+.result-top{padding:44px 28px 36px;text-align:center;flex:none;}
+.result-category{font-size:14px;font-weight:600;margin-bottom:10px;opacity:.8;}
+.result-score{font-size:18px;font-weight:700;opacity:.75;margin-bottom:8px;}
+.result-title{font-size:38px;font-weight:900;letter-spacing:-.03em;line-height:1.2;margin-bottom:28px;}
+.emoji-circle{width:96px;height:96px;border-radius:50%;background:rgba(255,255,255,.18);
+  border:2.5px dashed rgba(255,255,255,.35);display:flex;align-items:center;justify-content:center;
+  font-size:46px;margin:0 auto 28px;}
+.result-body-text{font-size:15.5px;line-height:1.75;font-weight:500;padding:0 4px;}
+.result-tags{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:20px;}
+.result-tags span{font-size:13px;font-weight:600;border:1.5px solid rgba(255,255,255,.3);
+  color:rgba(255,255,255,.85);padding:6px 14px;border-radius:99px;}
+
+/* 흰 카드 */
+.result-card{background:var(--card);border-radius:24px 24px 0 0;padding:28px 24px 32px;color:#2D2E2F;flex:none;margin-top:4px;}
+.card-section{margin-bottom:22px;}
+.card-section-title{font-size:13px;font-weight:700;color:#888;margin-bottom:10px;display:flex;align-items:center;gap:6px;}
+.card-section p{font-size:14.5px;line-height:1.8;color:#4A4A50;margin-bottom:10px;}
+.card-section p:last-child{margin-bottom:0;}
+.selected-tags{display:flex;flex-wrap:wrap;gap:7px;margin-top:4px;}
+.selected-tags span{font-size:12.5px;font-weight:600;color:#565C65;background:#F4F5F7;border:1px solid #E7EBF2;padding:6px 12px;border-radius:99px;}
+.info-section{background:#F8F9FB;border-radius:16px;padding:16px 18px;margin-bottom:16px;}
+.info-title{font-size:13px;font-weight:700;color:#3D4551;margin-bottom:8px;}
+.info-body{font-size:13.5px;color:#565C65;line-height:1.75;}
+
+.result-actions{display:flex;flex-direction:column;gap:10px;margin-top:4px;}
+.btn-cta-main{appearance:none;width:100%;border:0;background:var(--orange);color:#fff;font-family:inherit;
+  font-size:17px;font-weight:700;padding:18px;border-radius:14px;cursor:pointer;
+  transition:transform .1s;box-shadow:0 6px 20px rgba(253,126,20,.28);}
+.btn-cta-main:hover{background:var(--orange-dark);}.btn-cta-main:active{transform:scale(.97);}
+.result-sub-actions{display:flex;gap:9px;}
+.btn-ghost{appearance:none;flex:1;border:1.5px solid #E7EBF2;background:#fff;color:#565C65;font-family:inherit;
+  font-size:13.5px;font-weight:600;padding:13px 8px;border-radius:12px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;gap:5px;transition:border-color .15s;}
+.btn-ghost:hover{border-color:#FD7E14;color:#E8590C;}.btn-ghost svg{width:15px;height:15px;flex:none;}
+.btn-ghost-full{width:100%;justify-content:center;}
+.disclaimer{padding:16px 0 4px;font-size:11px;color:#AAA;line-height:1.7;text-align:center;}
+
+/* 토스트 */
+.toast{position:fixed;left:50%;bottom:32px;transform:translateX(-50%) translateY(16px);
+  background:#1C1C1E;border:1px solid rgba(255,255,255,.15);color:#fff;font-size:13.5px;font-weight:600;
+  padding:11px 20px;border-radius:99px;opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;z-index:60;white-space:nowrap;}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+/* 모달 */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;align-items:flex-end;justify-content:center;z-index:50;padding:16px;}
+.overlay.show{display:flex;animation:fadein .2s;}@keyframes fadein{from{opacity:0;}to{opacity:1;}}
+.modal{background:#2C2C2E;border-radius:22px;padding:24px 22px 20px;width:100%;max-width:var(--maxw);
+  animation:slideup .28s cubic-bezier(.2,.7,.2,1);border:1px solid var(--line);}
+@keyframes slideup{from{transform:translateY(28px);}to{transform:none;}}
+.modal h3{color:#fff;font-size:18px;font-weight:800;margin-bottom:8px;}
+.modal p{color:var(--ink-2);font-size:14px;margin-bottom:20px;}
+.modal-btns{display:flex;gap:10px;}
+.m-stay{flex:1;appearance:none;border:0;background:var(--orange);color:#fff;font-family:inherit;font-size:15px;font-weight:700;padding:15px;border-radius:13px;cursor:pointer;}
+.m-quit{flex:1;appearance:none;border:0;background:var(--bg3);color:var(--ink-2);font-family:inherit;font-size:15px;font-weight:700;padding:15px;border-radius:13px;cursor:pointer;}
+
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="topbar">
+      <button class="back" id="backBtn" aria-label="이전으로">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <span class="brand" id="headerTitle">닥터나우 손발톱 무좀 셀프 테스트</span>
+    </div>
+    <div class="progress-wrap" id="progressWrap" hidden><div class="progress-bar" id="progressBar"></div></div>
+  </header>
+  <main id="main"></main>
+</div>
+
+<div class="toast" id="toast"></div>
+<div class="overlay" id="overlay">
+  <div class="modal">
+    <h3>테스트를 처음부터 다시 할까요?</h3>
+    <p>지금 나가면 테스트 결과가 사라져요.</p>
+    <div class="modal-btns">
+      <button class="m-stay" id="mStay">닫기</button>
+      <button class="m-quit" id="mQuit">테스트 다시하기</button>
+    </div>
+  </div>
+</div>
+
+<script>
+"use strict";
+
+const QUESTIONS = [
+  { title:"발가락 사이 또는 발바닥에\n가려움이 있나요? 🦶", desc:"지간형 무좀의 가장 흔한 초기 증상이에요.", tag:"발 가려움" },
+  { title:"손발톱 색이 하얗거나 노랗게,\n갈색으로 변했나요? 🟡", desc:"손발톱 무좀의 대표적인 색 변화예요.", tag:"손발톱 변색" },
+  { title:"손발톱이 잘 부서지거나\n갈라지나요? 💅", desc:"무좀균이 각질층을 손상시킬 때 나타나요.", tag:"손발톱 부서짐" },
+  { title:"손발톱이 들뜨거나\n피부에서 떨어지는 것 같나요? 🔼", desc:"조갑박리증과 함께 나타날 수 있어요.", tag:"손발톱 들뜸" },
+  { title:"손발톱 표면에 흰 반점이나\n줄무늬가 생겼나요? 🤍", desc:"표재성 백색 손발톱 무좀의 특징이에요.", tag:"흰 반점·줄무늬" },
+  { title:"손발톱이 두꺼워지거나\n울퉁불퉁해졌나요? 🪨", desc:"만성 무좀 감염 시 흔하게 나타나요.", tag:"손발톱 두꺼워짐" },
+  { title:"발이나 손·발톱에서\n평소보다 심한 냄새가 나나요? 👃", desc:"세균 이차 감염이 동반될 때 심해질 수 있어요.", tag:"심한 냄새" },
+  { title:"가족 중 손발톱 무좀 환자가 있거나\n슬리퍼·수건을 함께 사용하나요? 👨‍👩‍👧", desc:"직접 접촉으로 감염되는 경우가 많아요.", tag:"가족 감염 위험" },
+  { title:"평소 땀이 많거나\n운동화·구두를 오래 신는 편인가요? 👟", desc:"따뜻하고 습한 환경은 무좀균이 좋아해요.", tag:"고위험 환경" },
+  { title:"이러한 손발톱 변화가\n최근 3개월 이상 지속되고 있나요? 📅", desc:"3개월 이상 지속되면 만성 감염을 의심할 수 있어요.", tag:"3개월 이상 지속" },
+];
+
+const RESULTS = [
+  { min:0, max:2,
+    bg:"linear-gradient(160deg,#1D7A3A 0%,#34C759 100%)",
+    emoji:"😌", cat:"손발톱 무좀 셀프 테스트 결과",
+    title:"가능성 낮음",
+    bodyText:"현재 손발톱 무좀 가능성은 낮습니다.\n하지만 발을 청결하고 건조하게 유지하는 것이 중요해요.",
+    tags:["#가능성 낮음","#예방 관리"],
+    cardTexts:[
+      "발을 하루 1회 이상 깨끗하게 씻고 발가락 사이까지 잘 말려주세요.",
+      "통풍이 잘 되는 신발을 선택하고, 같은 신발을 매일 신지 않도록 해요.",
+      "증상이 새로 나타난다면 초기에 피부과를 방문하는 게 좋아요.",
+    ],
+    info:"무좀은 피부 사상균이 피부 각질층에 침투하면서 발생해요. 따뜻하고 습한 환경일수록 감염 위험이 높아집니다.",
+  },
+  { min:3, max:5,
+    bg:"linear-gradient(160deg,#B8860B 0%,#FFD60A 100%)",
+    emoji:"🤔", cat:"손발톱 무좀 셀프 테스트 결과",
+    title:"무좀 의심",
+    bodyText:"손발톱 무좀이 의심됩니다.\n피부과 진료를 통해 정확한 진단을 받아보세요.",
+    tags:["#무좀 의심","#진료 권장"],
+    cardTexts:[
+      "KOH 검사 등을 통해 무좀균 감염 여부를 정확하게 확인할 수 있어요.",
+      "자가 판단으로 무좀약을 오래 쓰면 내성이 생길 수 있어요. 진료 후 처방을 받으세요.",
+      "손발톱 무좀은 완치까지 수개월이 걸릴 수 있어요. 꾸준한 치료가 중요해요.",
+    ],
+    info:"무좀은 지간형(발가락 사이), 소수포형(물집), 각화형(두꺼운 각질) 세 가지 형태로 나타나요. 형태에 따라 치료 방법이 달라질 수 있어요.",
+  },
+  { min:6, max:10,
+    bg:"linear-gradient(160deg,#C0392B 0%,#FF3B30 100%)",
+    emoji:"😰", cat:"손발톱 무좀 셀프 테스트 결과",
+    title:"가능성 높음",
+    bodyText:"손발톱 무좀 가능성이 높습니다.\n정확한 진단(KOH 검사 등) 후 항진균 치료를 권장해요.",
+    tags:["#가능성 높음","#항진균 치료","#즉시 진료"],
+    cardTexts:[
+      "손발톱 무좀은 적절한 항진균제 치료 없이는 자연 치유가 어려워요.",
+      "치료 후에도 신발·양말에 남은 균에 의해 재발이 잦아요. 오래된 신발·양말은 교체하세요.",
+      "무좀으로 갈라진 피부를 통해 세균이 침투해 이차 감염이 생길 수 있어요.",
+      "가족과 수건·슬리퍼를 따로 사용하고, 공중 목욕탕·수영장 이용 시 주의하세요.",
+    ],
+    info:"손발톱 무좀이 동반된 경우 재감염 위험이 높아요. 의사와 진료를 통해 손발톱 무좀 여부를 반드시 확인하세요.",
+  },
+];
+
+// 닥터나우 비대면 진료실 딥링크 (무좀 = categoryId 600)
+const DEEPLINK = "doctornow://link?to=doctor-list&type=symptom&categoryId=600";
+// 앱이 없을 때 보낼 스토어 주소 (1.5초 뒤 자동 이동)
+const STORE_IOS = "https://apps.apple.com/kr/app/id1513718380";
+const STORE_AND = "https://play.google.com/store/apps/details?id=com.baedalyakgook_user";
+
+function goToDoctor(){
+  const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+  const fallback = isIOS ? STORE_IOS : STORE_AND;
+  window.location.href = DEEPLINK;            // 1) 앱에서 진료실 열기 시도
+  setTimeout(() => { window.location.href = fallback; }, 1500); // 2) 앱 없으면 스토어로
+}
+
+let state, hist;
+function reset(){
+  state = { node:"intro", idx:0, count:0, selectedTags:[] };
+  hist = [];
+}
+reset();
+
+const mainEl = document.getElementById("main");
+const progressWrap = document.getElementById("progressWrap");
+const progressBar = document.getElementById("progressBar");
+const backBtn = document.getElementById("backBtn");
+const overlay = document.getElementById("overlay");
+const headerTitle = document.getElementById("headerTitle");
+
+function setHeader(){
+  const n = state.node;
+  const isResult = n === "result";
+  headerTitle.textContent = isResult ? "닥터나우 손발톱 무좀 셀프 테스트 결과" : "닥터나우 손발톱 무좀 셀프 테스트";
+  backBtn.style.display = n === "intro" ? "none" : "block";
+  if(n === "intro" || isResult){ progressWrap.hidden = true; }
+  else{
+    progressWrap.hidden = false;
+    progressBar.style.width = Math.round((state.idx / QUESTIONS.length) * 100) + "%";
+  }
+}
+
+function snap(){ return JSON.parse(JSON.stringify(state)); }
+function go(node){ hist.push(snap()); state.node = node; render(); }
+
+function render(){
+  setHeader();
+  if(state.node === "intro") return renderIntro();
+  if(state.node === "q")     return renderQ(state.idx);
+  if(state.node === "result")return renderResult();
+}
+
+/* 인트로 */
+function renderIntro(){
+  mainEl.innerHTML = `
+    <div class="screen">
+      <div class="intro-body">
+        <h1>내 손발톱,<br>무좀일까요? 🦶</h1>
+        <p>손발톱 색이 변하거나 두꺼워지고 잘 부서진다면 무좀을 의심해볼 수 있어요.</p>
+        <p>10가지 질문으로 손발톱 무좀 가능성을 빠르게 확인해 보세요.</p>
+        <div class="intro-note">본 테스트는 의학적 진단이 아닌 자가 확인용이에요. 정확한 진단은 피부과 전문의 진료로 이루어집니다.</div>
+      </div>
+    </div>
+    <div class="intro-cta"><button class="btn-primary" id="startBtn">시작하기</button></div>`;
+  document.getElementById("startBtn").onclick = () => { state.idx = 0; state.count = 0; state.selectedTags = []; go("q"); };
+}
+
+/* 질문 */
+function renderQ(i){
+  const q = QUESTIONS[i];
+  mainEl.innerHTML = `
+    <div class="screen">
+      <div class="q-body">
+        <div class="q-counter">질문 ${i+1} / ${QUESTIONS.length}</div>
+        <div class="q-title">${q.title}</div>
+        <div class="q-desc">${q.desc}</div>
+      </div>
+    </div>
+    <div class="q-cta">
+      <button class="btn-yes" id="qYes">네</button>
+      <button class="btn-no" id="qNo">아니오</button>
+    </div>`;
+  document.getElementById("qYes").onclick = () => {
+    state.count++;
+    state.selectedTags.push(q.tag);
+    next(i);
+  };
+  document.getElementById("qNo").onclick = () => { next(i); };
+}
+
+function next(i){
+  if(i + 1 < QUESTIONS.length){ state.idx = i + 1; go("q"); }
+  else go("result");
+}
+
+/* 결과 */
+function renderResult(){
+  const r = RESULTS.find(r => state.count >= r.min && state.count <= r.max);
+  const selTags = state.selectedTags.length
+    ? `<div class="card-section">
+        <div class="card-section-title">✅ 내가 선택한 증상</div>
+        <div class="selected-tags">${state.selectedTags.map(t=>`<span>#${t}</span>`).join("")}</div>
+       </div>` : "";
+
+  mainEl.innerHTML = `
+    <div class="result-screen">
+      <div class="result-top" style="background:${r.bg};">
+        <div class="result-category">${r.cat}</div>
+        <div class="result-score">해당 항목 ${state.count}개 / 10개</div>
+        <div class="result-title">${r.title}</div>
+        <div class="emoji-circle">${r.emoji}</div>
+        <div class="result-body-text">${r.bodyText.replace(/\n/g,"<br>")}</div>
+        <div class="result-tags">${r.tags.map(t=>`<span>${t}</span>`).join("")}</div>
+      </div>
+      <div class="result-card">
+        <div class="card-section">
+          <div class="card-section-title">💡 이렇게 해보세요</div>
+          ${r.cardTexts.map(t=>`<p>${t}</p>`).join("")}
+        </div>
+        <div class="info-section">
+          <div class="info-title">🔍 무좀이란?</div>
+          <div class="info-body">${r.info}</div>
+        </div>
+        ${selTags}
+        <div class="result-actions">
+          <button class="btn-cta-main" onclick="goToDoctor()">닥터나우에서 진료받기</button>
+          <div class="result-sub-actions">
+            <button class="btn-ghost" id="copyBtn">
+              <svg viewBox="0 0 24 24" fill="none"><rect x="9" y="9" width="11" height="11" rx="2" stroke="currentColor" stroke-width="1.8"/><path d="M5 15V5a2 2 0 012-2h10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+              증상 텍스트 복사
+            </button>
+            <button class="btn-ghost" id="shareBtn">
+              <svg viewBox="0 0 24 24" fill="none"><path d="M12 16V4m0 0L8 8m4-4l4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 14v4a2 2 0 002 2h10a2 2 0 002-2v-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+              친구에게 공유
+            </button>
+          </div>
+          <button class="btn-ghost btn-ghost-full" id="restartBtn" style="width:100%;justify-content:center;">↻ 다시 테스트 하기</button>
+        </div>
+        <div class="disclaimer">
+          본 결과는 의학적 진단이 아니며 참고용으로만 활용해 주세요.<br>
+          정확한 진단은 피부과 전문의와 상담하시기 바랍니다.<br><br>
+          출처: 대한의진균학회 · 서울대학교병원 · 삼성서울병원<br>
+          무좀 [tinea pedis] | 의학정보 | 건강정보 | 서울대학교병원
+        </div>
+      </div>
+    </div>`;
+
+  const summary = `[닥터나우 손발톱 무좀 셀프 테스트]\n결과: ${r.title} (${state.count}/10개 해당)\n${r.bodyText.replace(/\n/g," ")}\n선택 증상: ${state.selectedTags.map(t=>"#"+t).join(" ")}\n※ 의학적 진단이 아니며 정확한 진단은 전문의 진료로 이루어집니다.`;
+  document.getElementById("copyBtn").onclick = () => copy(summary);
+  document.getElementById("shareBtn").onclick = () => share(summary);
+  document.getElementById("restartBtn").onclick = () => { reset(); render(); };
+}
+
+/* 유틸 */
+function toast(msg){
+  const t = document.getElementById("toast"); t.textContent = msg; t.classList.add("show");
+  clearTimeout(toast._t); toast._t = setTimeout(() => t.classList.remove("show"), 1800);
+}
+async function copy(text){
+  try{ await navigator.clipboard.writeText(text); toast("복사되었어요!"); }
+  catch(e){
+    const ta = document.createElement("textarea"); ta.value = text; document.body.appendChild(ta); ta.select();
+    try{ document.execCommand("copy"); toast("복사되었어요!"); } catch(_){ toast("복사에 실패했어요."); }
+    document.body.removeChild(ta);
+  }
+}
+async function share(text){
+  if(navigator.share){ try{ await navigator.share({title:"닥터나우 손발톱 무좀 셀프 테스트", text}); } catch(e){} }
+  else copy(text);
+}
+
+backBtn.onclick = () => {
+  if(hist.length === 0){ overlay.classList.add("show"); return; }
+  state = hist.pop(); render();
+};
+document.getElementById("mStay").onclick = () => overlay.classList.remove("show");
+document.getElementById("mQuit").onclick = () => { overlay.classList.remove("show"); reset(); render(); };
+overlay.onclick = (e) => { if(e.target === overlay) overlay.classList.remove("show"); };
+
+render();
+</script>
+</body>
+</html>
